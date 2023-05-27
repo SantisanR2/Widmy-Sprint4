@@ -1,20 +1,35 @@
-import json
-from django.http import HttpResponse, JsonResponse
-from .models import PersonalSalud
+from django.conf import settings
+from pymongo import MongoClient
+from django.http import JsonResponse
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
 
-# Create your views here.
-def personalSaludList(request):
-    queryset = PersonalSalud.objects.all()
-    context = list(queryset.values('id', 'nombre', 'edad', 'sexo'))
-    return JsonResponse(context, safe=False)
+@api_view(["GET", "POST"])
+def personalSalud(request):
+    client = MongoClient(settings.MONGO_CLI)
+    db = client.microservice_db
+    personalSalud = db['personalSalud']
 
-def personalSaludCreate(request):
-    if request.method == 'POST':
-        data = request.body.decode('utf-8')
-        data_json = json.loads(data)
-        personalSalud = PersonalSalud()
-        personalSalud.nombre = data_json['nombre']
-        personalSalud.edad = data_json['edad']
-        personalSalud.sexo = data_json['sexo']
-        personalSalud.save()
-        return HttpResponse("Personal de salud creado correctamente")
+    if request.method == "GET":
+        result = []
+        data = personalSalud.find({})
+        for dto in data:
+            json_data = {
+                'id': str(dto['_id']),
+                'nombre': dto['nombre']
+            }
+            result.append(json_data)
+        client.close()
+        return JsonResponse(result, safe=False)
+    
+    elif request.method == "POST":
+        data = JSONParser().parse(request)
+        result = personalSalud.insert_one(data)
+        resp = {
+            "MongoObjectID": str(result),
+            "Mensaje": "Se ha insertado el personal de salud"
+        }
+        client.close()
+        return JsonResponse(resp, safe=False)
+
+
