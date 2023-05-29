@@ -27,6 +27,7 @@ def personalSalud(request):
         data = JSONParser().parse(request)
 
         r = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
+        print(r.text)
         hash = r.json()
         hash = hash['hash']
 
