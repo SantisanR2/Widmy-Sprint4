@@ -123,4 +123,4 @@ STATIC_URL = 'static/'
 
 MONGO_CLI = os.environ['MONGO_CLIENT']
 
-PATH_ENCRYPT = "http://0.0.0.0:8080/hash"
+PATH_ENCRYPT = "http://35.223.111.238:8080/hash"
