@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/hash', methods=['POST'])
 def hash_string():
-    data = request.json()
+    data = request.json
     print(data)
     string_to_hash = data.get('string_to_hash')
     print(string_to_hash)
