@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 import requests
-import json
+import json as j
 
 @api_view(["GET", "POST"])
 def personalSalud(request):
@@ -28,11 +28,11 @@ def personalSalud(request):
         data = JSONParser().parse(request)
 
         r = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
-        hash = r.json()
+        hash = r.j()
         hash = hash['hash']
 
         s = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
-        hash2 = s.json()
+        hash2 = s.j()
         hash2 = hash2['hash']
 
         if(hash == hash2):
