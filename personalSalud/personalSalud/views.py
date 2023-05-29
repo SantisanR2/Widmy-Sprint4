@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
+import requests
 
 @api_view(["GET", "POST"])
 def personalSalud(request):
@@ -25,10 +26,10 @@ def personalSalud(request):
     elif request.method == "POST":
         data = JSONParser().parse(request)
 
-        r = request.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
+        r = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
         hash = r.json()['hash']
 
-        s = request.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
+        s = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
         hash2 = s.json()['hash']
 
         if(hash == hash2):
