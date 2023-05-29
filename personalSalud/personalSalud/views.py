@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from pymongo import MongoClient
 from django.http import JsonResponse
@@ -26,12 +27,14 @@ def personalSalud(request):
     elif request.method == "POST":
         data = JSONParser().parse(request)
 
-        r = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
+        payload = {'string_to_hash': data['nombre']}
+        headers = {'Content-Type': 'application/json'}
+        r = requests.post(settings.PATH_ENCRYPT, data=json.dumps(payload), headers=headers)
         print(r.text)
         hash = r.json()
         hash = hash['hash']
 
-        s = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
+        s = requests.post(settings.PATH_ENCRYPT, data=json.dumps(payload), headers=headers)
         hash2 = r.json()
         hash2 = hash2['hash']
 
