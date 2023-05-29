@@ -19,6 +19,7 @@ def personalSalud(request):
                 'nombre': dto['nombre']
             }
             result.append(json_data)
+            result.append({'hola':'hi'})
         client.close()
         return JsonResponse(result, safe=False)
     
