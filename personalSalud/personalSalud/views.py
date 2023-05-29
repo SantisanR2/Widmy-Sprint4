@@ -28,12 +28,10 @@ def personalSalud(request):
         data = JSONParser().parse(request)
 
         r = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
-        hash = r.j()
-        hash = hash['hash']
+        hash = r['hash']
 
         s = requests.post(settings.PATH_ENCRYPT, data={'string_to_hash': data['nombre']})
-        hash2 = s.j()
-        hash2 = hash2['hash']
+        hash2 = r['hash']
 
         if(hash == hash2):
             result = personalSalud.insert_one(data)
