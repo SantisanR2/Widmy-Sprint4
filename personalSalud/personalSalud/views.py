@@ -40,7 +40,7 @@ def personalSalud(request):
         hash2 = hash2['hash']
 
 
-        #hash = "Hash errado"
+        hash = "Hash errado"
 
         if(hash == hash2):
             result = personalSalud.insert_one(data)
