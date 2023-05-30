@@ -8,6 +8,7 @@ import requests
 
 @api_view(["GET", "POST"])
 def personalSalud(request):
+
     client = MongoClient(settings.MONGO_CLI)
     db = client.microservice_db
     personalSalud = db['personalSalud']
@@ -37,6 +38,9 @@ def personalSalud(request):
         s = requests.post(settings.PATH_ENCRYPT, data=json.dumps(payload), headers=headers)
         hash2 = r.json()
         hash2 = hash2['hash']
+
+
+        #hash = "Hash errado"
 
         if(hash == hash2):
             result = personalSalud.insert_one(data)
